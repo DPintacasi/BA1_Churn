@@ -1,3 +1,9 @@
+# MACOS FILE SYS
+.DS_Store
+*/.DS_Store
+
+.vscode
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -76,6 +82,7 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+*/.ipynb_checkpoints/*
 
 # IPython
 profile_default/
