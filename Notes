@@ -1,0 +1,40 @@
+1.	Splitting the data
+Training, validation, test set. Cross validation? Split in 10 subsets?
+What ratio do we keep for the data?
+In the base set:
+0: 61,784
+1: 1,913
+% churn: 3.1%
+Do we want more churn cases in the training set to improve performance, or keep the 3.1% ratio?
+
+Remember:
+-	Before splitting: adding new variables, removing old variables
+-	After splitting: transformations: means, modes, binning, …
+
+2.	Cleaning the data
+-	Check value consistency
+-	Missing values: median / node / missingness
+-	Idea: we have a lot of missingness in our demographic variables (children, education, relationship). Instead of missingness for each of these variables, we can aggregate missingness on a 0 to 1 scale?
+For example (0 = not missing, 1 = missing):
+0 0 0 = 0% missing
+0 0 1 = 33.3% missing
+0 1 1 = 66.7% missing
+1 1 1 = 100% missing
+The idea is, the more information your bank has on you, the more invested you are in that bank (have more important products etc) so you will be less likely to churn. This one aggregate missingness variable might be good to capture that
+-	Check for outliers
+3.	Transforming the data
+-	Check distributions + # of categories for categorical variables
+o	Standardize for gaussian distributions
+o	Normalise other?
+-	How to distance our categorical data?
+o	Binning: for ages, but how do we bin? 
+	10 – 19, 20 – 29, …
+	Equal distribution of people with set amount of bins
+4.	Adding to the data
+-	Trends:
+o	In dummies? 
+o	In values? % growth or nominal growth? How to normalize?
+o	How to handle outliers in this normalisation?
+-	Deleting: what about all the dummies vs. amount, do we need to remove here? 
+5.	Some things to check:
+-	Featuretools, PCA
