@@ -13,8 +13,7 @@ access functions:
 
 import numpy as np
 import pandas as pd
-from sklearn.metrics import accuracy_score,confusion_matrix,classification_report,auc,roc_curve
-
+from sklearn.metrics import classification_report,auc,roc_curve,make_scorer
 
 # from sklearn.metrics import  confusion_matrix,classification_report
 # ======= Functions ========
@@ -48,24 +47,18 @@ def evaluate(y, y_pred, y_pred_prob):
     
     fpr, tpr, thresholds = roc_curve(y, y_pred)
     AUC = auc(fpr, tpr)
-    print("AUC: %.2f \n" % AUC)
     print("-"*60)
     
     # extract only positive prob
-    y_pred_prob_pos = [x[1] for x in y_pred_prob]
+    y_pred_prob_pos = y_pred_prob[:,1]
     
     # get top 250 "most probable" positive predictions
-    df=pd.DataFrame({'y':y,'y_pred':y_pred,'y_pred_prob':y_pred_prob_pos})
+    df=pd.DataFrame({'y':y,'y_pred_prob':y_pred_prob_pos})
     df = df.sort_values(by='y_pred_prob',ascending=False)
     y_pred_250 = df.head(250)
-   
-    # Get and reshape confusion matrix data
-    matrix = confusion_matrix(y_pred_250.y, y_pred_250.y_pred)
-    fpr, tpr, thresholds = roc_curve(y_pred_250.y, y_pred_250.y_pred)
-    AUC = auc(fpr, tpr)
-
-    print("No. of TP (precision@250): %i" % matrix[-1,-1])
-    print("AUC: %.3f" % AUC)
+      
+    print("AUC: %.2f" % AUC)
+    print("No. of TP (precision@250): %i" % y_pred_250.y.sum())
     print("-"*60)
     
     
@@ -146,11 +139,28 @@ def load_data(path):
     print('-'*60)
 
     
-    return data
+    return data 
     
-       
+def gridscorer():   
     
+    """
+    Customer scorer for GridSearchCV and similar (see sklearn make_scorer documentation)
+    Scores based on precision@250
     
+    Use:
+        gridscorer = ch.gridscorer()
+        search = GridSearchCV( estimator, param_grid, scoring = gridscorer)
+        
+    """
+    def my_scorer(y_true, y_predicted_prob_pos): 
+        df=pd.DataFrame({'y':y_true,'y_pred_prob':y_predicted_prob_pos})
+        df = df.sort_values(by='y_pred_prob',ascending=False)
+        y_pred_250 = df.head(250)
+        precision_at_250 = y_pred_250.y.sum()
+        return precision_at_250
 
+    gridscorer = make_scorer(my_scorer,greater_is_better = True, needs_proba = True)
+    
+    return gridscorer
     
     
