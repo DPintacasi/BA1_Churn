@@ -4,7 +4,7 @@
 # In[1]:
 
 
-get_ipython().run_line_magic('matplotlib', 'inline')
+# get_ipython().run_line_magic('matplotlib', 'inline')
 import numpy as np
 
 import pandas as pd
@@ -184,17 +184,17 @@ y_pred_test_probs = clf.predict_proba(X_test)
 ch.evaluate(y_test, y_pred_test, y_pred_test_probs)
 
 # run on submission data
-data_sub = ch.load_data('../data/test_month_3.csv')
-X_sub, y_sub = sample_agnostic_transformation(data_sub)
+# data_sub = ch.load_data('../data/test_month_3.csv')
+# X_sub, y_sub = sample_agnostic_transformation(data_sub)
 
-# make prediction on test
-y_pred_sub = clf.predict(X_sub)
-y_pred_test_sub = clf.predict_proba(X_sub)
-y_pred_test_sub_pos = [x[1] for x in y_pred_test_sub]
+# # make prediction on test
+# y_pred_sub = clf.predict(X_sub)
+# y_pred_test_sub = clf.predict_proba(X_sub)
+# y_pred_test_sub_pos = [x[1] for x in y_pred_test_sub]
 
-df = pd.DataFrame({'ID': data_sub.client_id,'PROB':y_pred_test_sub_pos})
-today = dt.datetime.today()
-df.to_csv(f'../output/lr_{today.month}{today.day}2.csv', index = False)
+# df = pd.DataFrame({'ID': data_sub.client_id,'PROB':y_pred_test_sub_pos})
+# today = dt.datetime.today()
+# df.to_csv(f'../output/lr_{today.month}{today.day}2.csv', index = False)
 # In[ ]:
 
 
