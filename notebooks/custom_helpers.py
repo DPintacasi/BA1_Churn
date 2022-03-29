@@ -19,24 +19,26 @@ from sklearn.metrics import classification_report,auc,roc_curve,make_scorer
 # ======= Functions ========
 
 
-def evaluate(y, y_pred, y_pred_prob):
+def evaluate(clf, X_test, y_test):
     
     """
     Evaluates model 
     
     Input
     ---------------------
-    y: vector of true labels
-    y_pred: vector of predicted label
-    y_pred_prob: vector of probabilities [from .predict_proba() sklearn method]
+    clf: TRAINED model
+    X_test: X test set
+    y_test: y test set 
     
     Output
     ---------------------
     Classification report on whole test set
-    AUC on whole test set
+    AUC (ROC)
     Precision@250
-    AUC@250
     """
+    
+    y = y_test
+    y_pred_test = clf.predict(X_test)
     
     print("-"*60)
     class_names = ['Did not Churn', 'Churn']
@@ -50,6 +52,7 @@ def evaluate(y, y_pred, y_pred_prob):
     print("-"*60)
     
     # extract only positive prob
+    y_pred_test_probs = clf.predict_proba(X_test)
     y_pred_prob_pos = y_pred_prob[:,1]
     
     # get top 250 "most probable" positive predictions
