@@ -38,7 +38,7 @@ def evaluate(clf, X_test, y_test):
     """
     
     y = y_test
-    y_pred_test = clf.predict(X_test)
+    y_pred = clf.predict(X_test)
     
     print("-"*60)
     class_names = ['Did not Churn', 'Churn']
@@ -52,11 +52,10 @@ def evaluate(clf, X_test, y_test):
     print("-"*60)
     
     # extract only positive prob
-    y_pred_test_probs = clf.predict_proba(X_test)
-    y_pred_prob_pos = y_pred_prob[:,1]
+    y_pred_prob_pos = clf.predict_proba(X_test)[:,1]
     
     # get top 250 "most probable" positive predictions
-    df=pd.DataFrame({'y':y,'y_pred_prob':y_pred_prob_pos})
+    df = pd.DataFrame({'y':y,'y_pred_prob':y_pred_prob_pos})
     df = df.sort_values(by='y_pred_prob',ascending=False)
     y_pred_250 = df.head(250)
       
