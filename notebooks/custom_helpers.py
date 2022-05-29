@@ -15,7 +15,6 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import classification_report,auc,roc_curve,make_scorer
 
-# from sklearn.metrics import  confusion_matrix,classification_report
 # ======= Functions ========
 
 
